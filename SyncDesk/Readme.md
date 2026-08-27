@@ -27,6 +27,7 @@ O **SyncDesk** é um sistema de Help Desk e suporte em tempo real desenvolvido e
 ---
 
 ## 🧩 Modelo de Domínio
+```
                      ┌─────────────────────────┐
                      │         TENANT          │
                      │  (Empresa Contratante)  │
@@ -54,7 +55,7 @@ O **SyncDesk** é um sistema de Help Desk e suporte em tempo real desenvolvido e
                         │      MESSAGE      │
                         │     (Chat)        │
                         └───────────────────┘
-
+```
 
 | Entidade | Descrição |
 | :--- | :--- |
@@ -123,6 +124,7 @@ O **SyncDesk** é um sistema de Help Desk e suporte em tempo real desenvolvido e
 
 ---
 
+```
 SyncDesk/
 ├── Controllers/                  <-- Controladores de fluxo e ações das telas
 │   ├── AdminController.cs        <-- Gestão de dashboards e setores
@@ -146,3 +148,4 @@ SyncDesk/
 │   └── Ticket/                   <-- Index.cshtml, Fila.cshtml, Atender.cshtml
 ├── appsettings.json              <-- Configurações e string de conexão (DefaultConnection SQL Server)
 └── Program.cs                    <-- Pipeline HTTP, DI, SignalR, Swagger e Mapeamento de Rotas
+```
