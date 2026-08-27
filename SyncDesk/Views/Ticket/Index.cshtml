@@ -1,0 +1,73 @@
+@using SyncDesk.Models.Enums
+@model IEnumerable<SyncDesk.Models.Entities.Ticket>
+
+@{
+    ViewData["Title"] = "Painel de Atendimentos";
+}
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <div>
+        <h2 class="fw-bold mb-1"><i class="bi bi-ticket-detailed me-2 text-primary"></i>Painel de Atendimentos</h2>
+        <p class="text-muted mb-0">Gerencie todos os chamados ativos e histórico do sistema</p>
+    </div>
+</div>
+
+<div class="card card-custom p-3">
+    <div class="table-responsive">
+        <table class="table table-hover align-middle mb-0">
+            <thead class="table-light">
+                <tr>
+                    <th scope="col">Protocolo</th>
+                    <th scope="col">Assunto</th>
+                    <th scope="col">Status</th>
+                    <th scope="col">Prioridade</th>
+                    <th scope="col">Data de Abertura</th>
+                    <th scope="col" class="text-end">Ações</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var ticket in Model)
+                {
+                    var statusClass = ticket.Status switch
+                    {
+                        TicketStatusEnum.AguardandoFila => "bg-warning text-dark",
+                        TicketStatusEnum.EmAtendimento => "bg-primary",
+                        TicketStatusEnum.PendenteCliente => "bg-info text-dark",
+                        TicketStatusEnum.Encerrado => "bg-secondary",
+                        _ => "bg-light text-dark"
+                    };
+
+                    var prioridadeClass = ticket.Prioridade switch
+                    {
+                        PrioridadeEnum.Baixa => "bg-light text-dark border",
+                        PrioridadeEnum.Media => "bg-info text-dark",
+                        PrioridadeEnum.Alta => "bg-warning text-dark",
+                        PrioridadeEnum.Urgente => "bg-danger",
+                        _ => "bg-light text-dark"
+                    };
+
+                    <tr>
+                        <td class="fw-bold text-secondary">
+                            <code>@ticket.Protocolo</code>
+                        </td>
+                        <td class="fw-semibold">@ticket.Assunto</td>
+                        <td>
+                            <span class="badge badge-status @statusClass">@ticket.Status</span>
+                        </td>
+                        <td>
+                            <span class="badge badge-status @prioridadeClass">@ticket.Prioridade</span>
+                        </td>
+                        <td class="text-muted small">
+                            <i class="bi bi-clock me-1"></i>@ticket.DataAbertura.ToString("dd/MM/yyyy HH:mm")
+                        </td>
+                        <td class="text-end">
+                            <a asp-action="Atender" asp-route-id="@ticket.Id" class="btn btn-sm btn-primary">
+                                <i class="bi bi-chat-dots me-1"></i> Abrir Chat
+                            </a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

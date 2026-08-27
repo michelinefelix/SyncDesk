@@ -1,0 +1,51 @@
+﻿@model IEnumerable<SyncDesk.Models.Entities.Department>
+
+<div class="container mt-4">
+    <h2>Departamentos</h2>
+
+    <!-- Formulário de Criação -->
+    <form asp-controller="Admin" asp-action="CriarDepartamento" method="post" class="row g-3 mb-4">
+        <div class="col-md-5">
+            <input type="text" name="nome" class="form-control" placeholder="Nome do Setor (ex: Financeiro)" required />
+        </div>
+        <div class="col-md-5">
+            <input type="text" name="descricao" class="form-control" placeholder="Descrição do departamento" />
+        </div>
+        <div class="col-md-2">
+            <button type="submit" class="btn btn-success w-100">Criar Setor</button>
+        </div>
+    </form>
+
+    <!-- Tabela de Departamentos -->
+    <table class="table table-hover align-middle">
+        <thead>
+            <tr>
+                <th>Nome</th>
+                <th>Descrição</th>
+                <th>Status</th>
+            </tr>
+        </thead>
+        <tbody>
+            @if (Model != null)
+            {
+                @foreach (var dept in Model)
+                {
+                    <tr>
+                        <td>@dept.Nome</td>
+                        <td>@dept.Descricao</td>
+                        <td>
+                            <form asp-controller="Admin" asp-action="AlternarStatusDepartamento" method="post" class="d-inline">
+                                <input type="hidden" name="id" value="@dept.Id" />
+                                <input type="hidden" name="ativo" value="@(!dept.Ativo ? "true" : "false")" />
+                                
+                                <button type="submit" class="btn btn-sm @(dept.Ativo ? "btn-success" : "btn-secondary")">
+                                    @(dept.Ativo ? "Ativo" : "Inativo")
+                                </button>
+                            </form>
+                        </td>
+                    </tr>
+                }
+            }
+        </tbody>
+    </table>
+</div>

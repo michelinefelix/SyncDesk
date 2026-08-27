@@ -1,0 +1,56 @@
+# ==========================================
+# Compilação e Binários (.NET / C#)
+# ==========================================
+bin/
+obj/
+out/
+publish/
+[Bb]in/
+[Oo]bj/
+
+# ==========================================
+# Configurações de IDEs e Editores
+# ==========================================
+.vs/
+.vscode/
+.idea/
+*.user
+*.userosv
+*.suo
+*.userprefs
+*.sln.docstates
+
+# ==========================================
+# Pacotes e Caches do NuGet
+# ==========================================
+*.nupkg
+**/packages/*
+!**/packages/build/
+project.lock.json
+project.fragment.lock.json
+
+# ==========================================
+# Segredos, Chaves e Variáveis de Ambiente
+# ==========================================
+.env
+*.env
+appsettings.Local.json
+appsettings.Development.json.secret
+**/DataProtection-Keys/
+
+# ==========================================
+# Arquivos do Sistema Operacional
+# ==========================================
+.DS_Store
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+
+# ==========================================
+# Logs e Bancos de Dados Locais
+# ==========================================
+*.log
+*.mdf
+*.ldf
+*.db
+*.sqlite

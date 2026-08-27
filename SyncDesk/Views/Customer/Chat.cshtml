@@ -1,0 +1,112 @@
+﻿@model SyncDesk.Models.Entities.Ticket
+@{
+    ViewData["Title"] = $"Atendimento - {Model.Protocolo}";
+    var customerId = ViewBag.CustomerId;
+    var mensagens = ViewBag.Mensagens as IEnumerable<SyncDesk.Models.Entities.Message> ?? new List<SyncDesk.Models.Entities.Message>();
+}
+
+<div class="row justify-content-center">
+    <div class="col-md-8">
+        <div class="card card-custom d-flex flex-column" style="height: 600px;">
+            <div class="card-header bg-white py-3 border-bottom d-flex justify-content-between align-items-center">
+                <div>
+                    <h5 class="fw-bold mb-0">@Model.Assunto</h5>
+                    <small class="text-muted">Protocolo: <code>@Model.Protocolo</code></small>
+                </div>
+                <span class="badge bg-primary">@Model.Status</span>
+            </div>
+
+            <!-- Corpo de Mensagens -->
+            <div id="chatBox" class="card-body overflow-auto flex-grow-1 bg-light p-3">
+                @foreach (var msg in mensagens)
+                {
+                    var isCliente = msg.TipoRemetente == SyncDesk.Models.Enums.TipoRemetenteEnum.Cliente;
+                    <div class="d-flex mb-3 @(isCliente ? "justify-content-end" : "justify-content-start")">
+                        <div class="p-3 rounded-3 shadow-sm @(isCliente ? "bg-primary text-white" : "bg-white")" style="max-width: 75%;">
+                            <p class="mb-1 text-break">@msg.Conteudo</p>
+                            <small class="@(isCliente ? "text-white-50" : "text-muted") float-end ms-2" style="font-size: 0.7rem;">
+                                @msg.DataEnvio.ToString("HH:mm")
+                            </small>
+                        </div>
+                    </div>
+                }
+            </div>
+
+            <!-- Entrada de Mensagem -->
+            <div class="card-footer bg-white p-3 border-top">
+                @if (Model.Status == SyncDesk.Models.Enums.TicketStatusEnum.Encerrado)
+                {
+                    <div class="alert alert-secondary mb-0 text-center py-2">
+                        <i class="bi bi-lock-fill me-1"></i> Atendimento encerrado.
+                    </div>
+                }
+                else
+                {
+                    <form id="chatForm" class="d-flex gap-2">
+                        <input type="text" id="mensagemInput" class="form-control" placeholder="Digite sua mensagem..." required autocomplete="off" />
+                        <button type="submit" class="btn btn-primary px-4">
+                            <i class="bi bi-send-fill"></i>
+                        </button>
+                    </form>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/8.0.0/signalr.min.js"></script>
+    <script>
+        const ticketId = "@Model.Id";
+        const customerId = "@customerId";
+        const chatBox = document.getElementById("chatBox");
+        const chatForm = document.getElementById("chatForm");
+
+        if (chatBox) chatBox.scrollTop = chatBox.scrollHeight;
+
+        const connection = new signalR.HubConnectionBuilder()
+            .withUrl("/atendimentoHub")
+            .build();
+
+        connection.start().then(() => {
+            connection.invoke("EntrarNaSalaTicket", ticketId);
+        }).catch(err => console.error(err.toString()));
+
+        connection.on("ReceberMensagem", (remetenteId, conteudo, hora) => {
+            const msgElement = document.createElement("div");
+            msgElement.className = "d-flex mb-3 justify-content-start";
+            msgElement.innerHTML = `
+                        <div class="p-3 rounded-3 shadow-sm bg-white" style="max-width: 75%;">
+                            <p class="mb-1 text-break">${conteudo}</p>
+                            <small class="text-muted float-end ms-2" style="font-size: 0.7rem;">${hora}</small>
+                        </div>
+                    `;
+            chatBox.appendChild(msgElement);
+            chatBox.scrollTop = chatBox.scrollHeight;
+        });
+
+        if (chatForm) {
+            chatForm.addEventListener("submit", function(e) {
+                e.preventDefault();
+                const input = document.getElementById("mensagemInput");
+                const conteudo = input.value;
+                if (!conteudo.trim()) return;
+
+                // TipoRemetente 1 = Cliente
+                connection.invoke("EnviarMensagemAoVivo", ticketId, customerId, 1, conteudo).then(() => {
+                    const msgElement = document.createElement("div");
+                    msgElement.className = "d-flex mb-3 justify-content-end";
+                    msgElement.innerHTML = `
+                                <div class="p-3 rounded-3 shadow-sm bg-primary text-white" style="max-width: 75%;">
+                                    <p class="mb-1 text-break">${conteudo}</p>
+                                    <small class="text-white-50 float-end ms-2" style="font-size: 0.7rem;">${new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</small>
+                                </div>
+                            `;
+                    chatBox.appendChild(msgElement);
+                    chatBox.scrollTop = chatBox.scrollHeight;
+                    input.value = "";
+                });
+            });
+        }
+    </script>
+}
