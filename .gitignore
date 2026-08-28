@@ -5,8 +5,56 @@ bin/
 obj/
 out/
 publish/
+[Dd]ebug/
+[Dd]ebugPublic/
+[Rr]elease/
+[Rr]eleases/
+x64/
+x86/
+bld/
 [Bb]in/
 [Oo]bj/
+[Ll]og/
+artifacts/
+csx/
+ecf/
+rcf/
+AppPackages/
+BundleArtifacts/
+
+*.ilk
+*.meta
+*.obj
+*.pch
+*.pdb
+*.pgc
+*.pgd
+*.rsp
+*.sbr
+*.tlb
+*.tli
+*.tlh
+*.tmp
+*.tmp_proj
+*.build.csdef
+*_i.c
+*_p.c
+*_i.h
+
+# ==========================================
+# Segredos, Chaves e Azure Functions
+# ==========================================
+local.settings.json
+.env
+*.env
+appsettings.Local.json
+appsettings.Development.json.secret
+**/DataProtection-Keys/
+*.pfx
+*.publishsettings
+*.[Pp]ublish.xml
+*.azurePubxml
+PublishScripts/
 
 # ==========================================
 # Configurações de IDEs e Editores
@@ -14,29 +62,89 @@ publish/
 .vs/
 .vscode/
 .idea/
+*.sln.iml
+*.suo
 *.user
 *.userosv
-*.suo
 *.userprefs
 *.sln.docstates
+*.vspscc
+*.vssscc
+*.scc
+*.cachefile
+*.VC.db
+*.VC.VC.opendb
+*.[Cc]ache
+ipch/
+*.aps
+*.ncb
+*.opendb
+*.opensdf
+*.sdf
+.builds
+*.pidb
+*.svclog
+
+# Ferramentas e Plugins (ReSharper, Rider, NCrunch, etc.)
+_ReSharper*/
+*.[Rr]e[Ss]harper
+*.DotSettings.user
+.JustCode
+_TeamCity*
+*.dotCover
+_NCrunch_*
+.*crunch*.local.xml
+nCrunchTemp_*
+.cr/
+*.GhostDoc.xml
+.ntvs_analysis.dat
 
 # ==========================================
-# Pacotes e Caches do NuGet
+# Pacotes e Caches do NuGet / Paket
 # ==========================================
 *.nupkg
 **/packages/*
 !**/packages/build/
 project.lock.json
 project.fragment.lock.json
+*.nuget.props
+*.nuget.targets
+.paket/paket.exe
+paket-files/
 
 # ==========================================
-# Segredos, Chaves e Variáveis de Ambiente
+# Testes, Relatórios e Profiler
 # ==========================================
-.env
-*.env
-appsettings.Local.json
-appsettings.Development.json.secret
-**/DataProtection-Keys/
+[Tt]est[Rr]esult*/
+[Bb]uild[Ll]og.*
+*.VisualState.xml
+TestResult.xml
+_Chutzpah*
+*.psess
+*.vsp
+*.vspx
+*.sap
+_UpgradeReport_Files/
+Backup*/
+UpgradeLog*.XML
+UpgradeLog*.htm
+Package.StoreAssociation.xml
+_pkginfo.txt
+
+# ==========================================
+# Bancos de Dados e Logs
+# ==========================================
+*.log
+*.mdf
+*.ldf
+*.db
+*.sqlite
+*.dbmdl
+*.dbproj.schemaview
+*.jfm
+*.rdl.data
+*.bim.layout
+*.bim_*.settings
 
 # ==========================================
 # Arquivos do Sistema Operacional
@@ -45,12 +153,15 @@ appsettings.Development.json.secret
 Thumbs.db
 ehthumbs.db
 Desktop.ini
+ClientBin/
+~$*
+*~
 
 # ==========================================
-# Logs e Bancos de Dados Locais
+# Outras Linguagens e Ferramentas (Node, Python, Sass)
 # ==========================================
-*.log
-*.mdf
-*.ldf
-*.db
-*.sqlite
+node_modules/
+.sass-cache/
+__pycache__/
+*.pyc
+.fake/

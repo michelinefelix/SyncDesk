@@ -1,3 +1,4 @@
 <Solution>
+  <Project Path="FunctionAppSyncDesk/FunctionAppSyncDesk.csproj" />
   <Project Path="SyncDesk/SyncDesk.csproj" />
 </Solution>
